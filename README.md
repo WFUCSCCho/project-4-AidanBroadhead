@@ -103,7 +103,7 @@ Dataset Source: https://www.kaggle.com/datasets/amaanansari09/top-100-songs
 
 Dataset Modifications ("None" if unchanged): None
 
-Result Analysis: 
+Result Analysis: All operations for each of the three graphs growns linearly with N. The insert operation was consistently the highest time cost of the three.
 
 ## Submission:
 
