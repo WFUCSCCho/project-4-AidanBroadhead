@@ -1,3 +1,11 @@
+/*********************************************************************************
+         * @file: SeparateChainingHashTable.java
+         * @description: This program implements a hash table using separate chaining and uses an array of liked lists
+ *                       to support insert, search, delete, rehash, and make empty operations.
+         * @author: Aidan Broadhead
+         * @date: December 4, 2025
+ *********************************************************************************/
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,6 +47,17 @@ public class SeparateChainingHashTable<AnyType> {
      */
     public void insert(AnyType x) {
         // FINISH ME
+        List<AnyType> whichList = theLists[myhash(x)];
+
+        // insert item if not already in table
+        if (!whichList.contains(x)) {
+            whichList.add(x);
+
+            // rehash
+            if (++currentSize > theLists.length) {
+                rehash();
+            }
+        }
     }
 
     /**
@@ -48,6 +67,13 @@ public class SeparateChainingHashTable<AnyType> {
      */
     public void remove(AnyType x) {
         // FINISH ME
+        List<AnyType> whichList = theLists[myhash(x)];
+
+        // remove item if it is in the list
+        if (whichList.contains(x)) {
+            whichList.remove(x);
+            currentSize--;
+        }
     }
 
     /**
@@ -58,6 +84,11 @@ public class SeparateChainingHashTable<AnyType> {
      */
     public boolean contains(AnyType x) {
         // FINISH ME
+
+        // check if item is in the table
+        List<AnyType> whichList = theLists[myhash(x)];
+        return whichList.contains(x);
+
     }
 
     /**
@@ -65,6 +96,14 @@ public class SeparateChainingHashTable<AnyType> {
      */
     public void makeEmpty() {
         // FINISH ME
+
+        // empty the table
+        for (int i = 0; i < theLists.length; i++) {
+            theLists[i].clear();
+        }
+
+        currentSize = 0;
+
     }
 
     /**
@@ -89,6 +128,23 @@ public class SeparateChainingHashTable<AnyType> {
 
     private void rehash() {
         // FINISH ME
+        List<AnyType>[] oldLists = theLists;
+
+        // create new larger empty table
+        theLists = new LinkedList[nextPrime(2 * oldLists.length)];
+        for (int i = 0; i < theLists.length; i++) {
+            theLists[i] = new LinkedList<>();
+        }
+
+        currentSize = 0;
+
+        // copy elements over
+        for (List<AnyType> list : oldLists) {
+            for (AnyType x : list) {
+                insert(x);
+            }
+        }
+
     }
 
     private int myhash(AnyType x) {
@@ -147,5 +203,3 @@ public class SeparateChainingHashTable<AnyType> {
     }
 
 }
-
-
